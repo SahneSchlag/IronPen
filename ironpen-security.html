@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IronPen Security – We Test What Others Trust.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0d1b3e;
+      --blue: #1a3fc4;
+      --blue-bright: #1e40c9;
+      --blue-light: #3b5fe0;
+      --bg: #f4f5f7;
+      --bg-alt: #eceef3;
+      --bg-dark: #0d1b3e;
+      --text: #0d1b3e;
+      --text-muted: #5a6480;
+      --text-light: #8a93b2;
+      --border: rgba(13,27,62,0.1);
+      --border-blue: rgba(30,64,201,0.2);
+      --white: #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--blue-bright); border-radius: 4px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw;
+      height: 72px;
+      background: rgba(244,245,247,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+    }
+    .nav-logo-icon { width: 170px; height: 60px; }
+
+    .nav-logo-text {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem; font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--navy);
+    }
+    .nav-logo-text span { color: var(--blue-bright); }
+
+    .nav-links {
+      display: flex; gap: 2.5rem; list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 1px; background: var(--blue-bright);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .nav-links a:hover { color: var(--navy); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .nav-cta {
+      background: var(--navy) !important;
+      color: var(--white) !important;
+      padding: 8px 20px;
+      border-radius: 4px;
+      font-weight: 600 !important;
+      transition: background 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--blue-bright) !important; transform: translateY(-1px); color: var(--white) !important; }
+    .nav-cta::after { display: none !important; }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 6px;
+    }
+    .hamburger span {
+      width: 24px; height: 2px;
+      background: var(--navy);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed; top: 72px; left: 0; right: 0; z-index: 999;
+      background: rgba(244,245,247,0.98);
+      backdrop-filter: blur(20px);
+      padding: 2rem;
+      flex-direction: column; gap: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--navy); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--blue-bright); }
+
+    /* ── HERO ── */
+    #home {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 140px 5vw 100px;
+      position: relative;
+      overflow: hidden;
+      background: var(--white);
+      text-align: center;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(30,64,201,0.07) 0%, transparent 70%);
+    }
+
+    .hero-content {
+      position: relative; z-index: 1;
+      max-width: 860px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--blue-bright);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: ''; display: block; width: 32px; height: 1px; background: var(--blue-bright);
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.75rem;
+      color: var(--navy);
+    }
+    h1 .highlight { color: var(--blue-bright); }
+    h1 .dim { color: var(--text-light); }
+
+    .hero-sub {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--navy);
+      color: var(--white);
+      padding: 14px 32px;
+      border-radius: 4px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem; font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+    .btn-primary:hover {
+      background: var(--blue-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(30,64,201,0.25);
+    }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent;
+      color: var(--navy);
+      padding: 14px 32px;
+      border-radius: 4px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem; font-weight: 600;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--blue-bright);
+      color: var(--blue-bright);
+      transform: translateY(-2px);
+    }
+
+    /* Terminal */
+    .hero-visual { position: relative; }
+
+    .terminal {
+      background: var(--navy);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(13,27,62,0.22), 0 0 0 1px rgba(30,64,201,0.12);
+    }
+    .terminal-header {
+      background: #060d22;
+      padding: 14px 20px;
+      display: flex; align-items: center; gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .terminal-dot:nth-child(1) { background: #ff5f57; }
+    .terminal-dot:nth-child(2) { background: #febc2e; }
+    .terminal-dot:nth-child(3) { background: #28c840; }
+    .terminal-title {
+      margin-left: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.3);
+    }
+    .terminal-body {
+      padding: 24px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      line-height: 2;
+      min-height: 280px;
+    }
+    .t-prompt { color: #4a7fff; }
+    .t-cmd { color: rgba(255,255,255,0.9); }
+    .t-out { color: rgba(255,255,255,0.45); }
+    .t-ok { color: #28c840; }
+    .t-warn { color: #febc2e; }
+    .t-err { color: #ff5f57; }
+    .cursor {
+      display: inline-block; width: 8px; height: 14px;
+      background: #4a7fff; vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px; margin-top: 2rem;
+      overflow: hidden;
+    }
+    .hero-stat {
+      padding: 20px;
+      background: var(--white);
+      text-align: center;
+    }
+    .hero-stat-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem; font-weight: 800;
+      color: var(--navy);
+    }
+    .hero-stat-num span { color: var(--blue-bright); }
+    .hero-stat-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-light);
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 100px 5vw; position: relative; }
+
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+
+    .section-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      color: var(--blue-bright);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--navy);
+    }
+
+    /* ── EXECUTIVE SUMMARY ── */
+    #executive { background: var(--bg); }
+
+    .exec-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: start; margin-top: 4rem;
+    }
+    .exec-text p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    .exec-text strong { color: var(--navy); }
+    .exec-pillars { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .exec-pillar {
+      padding: 24px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      border-left: 3px solid var(--blue-bright);
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .exec-pillar:hover {
+      border-left-color: var(--navy);
+      transform: translateX(4px);
+      box-shadow: 0 4px 20px rgba(13,27,62,0.08);
+    }
+    .exec-pillar h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      margin-bottom: 8px; color: var(--navy);
+    }
+    .exec-pillar p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── SERVICES ── */
+    #services { background: var(--white); }
+
+    .services-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 3rem;
+    }
+    .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+
+    .service-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--blue-bright);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .service-card:hover { border-color: var(--border-blue); transform: translateY(-4px); box-shadow: 0 8px 32px rgba(13,27,62,0.1); }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-icon {
+      width: 48px; height: 48px; margin-bottom: 1.5rem;
+      background: rgba(30,64,201,0.08);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .service-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 0.75rem; color: var(--navy);
+    }
+    .service-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.25rem; flex: 1; }
+    .service-price {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      color: var(--blue-bright);
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: auto;
+    }
+
+    /* ── CASE STUDIES ── */
+    #cases { background: var(--bg); }
+
+    .cases-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 2rem; margin-top: 3rem; }
+
+    .case-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 36px;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .case-card:hover { border-color: var(--border-blue); transform: translateY(-4px); box-shadow: 0 8px 32px rgba(13,27,62,0.1); }
+
+    .case-tag {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      color: var(--blue-bright);
+      background: rgba(30,64,201,0.07);
+      border: 1px solid rgba(30,64,201,0.15);
+      padding: 3px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .case-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem; font-weight: 700;
+      margin-bottom: 1.25rem; color: var(--navy);
+    }
+    .star-item { display: flex; gap: 1rem; margin-bottom: 1rem; }
+    .star-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      color: var(--blue-bright);
+      min-width: 60px;
+      padding-top: 2px;
+      letter-spacing: 0.05em;
+    }
+    .star-text { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+    .case-result {
+      margin-top: auto;
+      padding: 16px;
+      background: rgba(30,64,201,0.05);
+      border-radius: 6px;
+      border-left: 3px solid var(--blue-bright);
+    }
+    .case-result-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      color: var(--blue-bright);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .case-result p { font-size: 0.88rem; color: var(--navy); line-height: 1.6; }
+
+    /* ── TEAM ── */
+    #team { background: var(--white); }
+
+    .team-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 2rem; margin-top: 3rem; }
+
+    .team-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .team-card:hover { border-color: var(--border-blue); transform: translateY(-4px); box-shadow: 0 8px 32px rgba(13,27,62,0.1); }
+
+    .team-card-header {
+      padding: 32px 32px 24px;
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      background: var(--white);
+    }
+    .team-info h3 { font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; color: var(--navy); }
+    .team-role {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      color: var(--blue-bright);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .team-bio { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; }
+
+    .team-skills { padding: 24px 32px 32px; }
+    .skills-section { margin-bottom: 1.25rem; }
+    .skills-section-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      color: var(--text-light);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .skill-tag {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      padding: 4px 12px;
+      border-radius: 4px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg); }
+
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; margin-top: 3rem; align-items: start; }
+
+    .contact-info h3 { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: var(--navy); }
+    .contact-info p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 2rem; }
+
+    .contact-details { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-detail { display: flex; gap: 1rem; align-items: center; }
+    .contact-detail-icon {
+      width: 40px; height: 40px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .contact-detail-text { font-family: 'Outfit', sans-serif; font-size: 0.8rem; color: var(--navy); }
+    .contact-detail-label { font-size: 0.68rem; color: var(--text-light); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-family: 'Outfit', sans-serif; font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 16px;
+      color: var(--navy);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--text-light); }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--blue-bright); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group select option { background: var(--white); color: var(--navy); }
+
+    .btn-submit {
+      background: var(--navy);
+      color: var(--white);
+      padding: 14px 32px;
+      border: none; border-radius: 6px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit:hover {
+      background: var(--blue-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(30,64,201,0.25);
+    }
+    .form-success {
+      display: none;
+      padding: 16px 20px;
+      background: rgba(40,200,64,0.07);
+      border: 1px solid rgba(40,200,64,0.25);
+      border-radius: 6px;
+      color: #1a7a2e;
+      font-size: 0.9rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      padding: 60px 5vw 40px;
+    }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-top { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; margin-bottom: 3rem; }
+    .footer-brand p { font-size: 0.88rem; color: rgba(255,255,255,0.45); line-height: 1.7; margin-top: 1rem; max-width: 280px; }
+    .footer-col h4 { font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; color: rgba(255,255,255,0.9); text-align: center; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; align-items: center; }
+    .footer-col ul a { font-size: 0.88rem; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
+    .footer-col ul a:hover { color: rgba(255,255,255,0.9); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy { font-family: 'Outfit', sans-serif; font-size: 0.72rem; color: rgba(255,255,255,0.3); }
+    .footer-copy span { color: rgba(255,255,255,0.6); }
+
+    /* ── BACK TO TOP ── */
+    .back-top {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 800;
+      width: 44px; height: 44px;
+      background: var(--navy);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; text-decoration: none;
+      color: var(--white);
+      font-size: 1.1rem;
+      transition: all 0.3s;
+      opacity: 0; pointer-events: none;
+      box-shadow: 0 4px 16px rgba(13,27,62,0.25);
+    }
+    .back-top.visible { opacity: 1; pointer-events: all; }
+    .back-top:hover { transform: translateY(-3px); background: var(--blue-bright); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--navy);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 14px 24px;
+      font-size: 0.9rem;
+      color: var(--white);
+      z-index: 9999;
+      opacity: 0;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero-content { flex-direction: column; }
+      .hero-visual { display: none; }
+      .exec-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .cases-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .services-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    }
+    @media (max-width: 480px) {
+      section { padding: 70px 5vw; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#home" class="nav-logo">
+    <img class="nav-logo-icon" src="./images/ironpenlogo.png" alt="IronPen Security Logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="#executive">About Us</a></li>
+    <li><a href="#services">Our Services</a></li>
+    <li><a href="#cases">Case Studies</a></li>
+    <li><a href="#team">Our Team</a></li>
+    <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#executive" onclick="closeMenu()">About Us</a>
+  <a href="#services" onclick="closeMenu()">Our Services</a>
+  <a href="#cases" onclick="closeMenu()">Case Studies</a>
+  <a href="#team" onclick="closeMenu()">Our Team</a>
+  <a href="#contact" onclick="closeMenu()">Contact Us</a>
+</div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1 class="reveal">We <span class="highlight">test</span> what<br>others <span class="dim">trust.</span></h1>
+    <p class="hero-sub reveal">We simulate real-world attacks to uncover weaknesses and strengthen your digital resilience.</p>
+    <div class="hero-buttons reveal">
+      <a href="#services" class="btn-primary">Our Services →</a>
+      <a href="#cases" class="btn-secondary">Case Studies</a>
+    </div>
+    <div class="hero-stats reveal" style="margin-top:3rem; width:100%; max-width:580px">
+      <div class="hero-stat">
+        <div class="hero-stat-num">50<span>+</span></div>
+        <div class="hero-stat-label">Clients Secured</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">300<span>+</span></div>
+        <div class="hero-stat-label">Vulnerabilities Found</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">0</div>
+        <div class="hero-stat-label">Data Breaches</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXECUTIVE SUMMARY -->
+<section id="executive">
+  <div class="section-inner">
+    <h2 class="reveal">About Us</h2>
+    <div class="exec-grid">
+      <div class="exec-text reveal">
+        <p><strong>IronPen Security</strong> is a cybersecurity consultancy specialising in penetration testing and vulnerability assessment. We help organisations identify and eliminate security risks through realistic attack simulations and structured analysis.</p>
+        <p>Our approach focuses on <strong>clarity, precision, and actionable results</strong>, enabling clients to strengthen their systems and protect critical assets.</p>
+        <p>Whether you're a scaling startup or an established enterprise, we translate complex technical findings into clear business language that stakeholders can act on immediately.</p>
+        <a href="#contact" class="btn-primary" style="margin-top:0.5rem; display:inline-flex">Get in Touch →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="services-header reveal">
+      <h2>Our Services</h2>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-icon">🔍</div>
+        <h3>Penetration Testing</h3>
+        <p>We simulate real-world cyberattacks to identify vulnerabilities in your systems, networks, and applications before they can be exploited.</p>
+        <div class="service-price">from 399 €</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🛡️</div>
+        <h3>Security Consulting</h3>
+        <p>We provide expert advice and actionable recommendations to improve your organisation's overall security posture.</p>
+        <div class="service-price">from 60 € / hour</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎓</div>
+        <h3>Security Awareness Training</h3>
+        <p>Phishing simulations and tailored training sessions to transform your employees from the weakest link into a resilient human firewall.</p>
+        <div class="service-price">from 199 € / session</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section id="cases">
+  <div class="section-inner">
+    <h2 class="reveal">Case Studies</h2>
+    <div class="cases-grid">
+      <div class="case-card reveal">
+        <div class="case-tag">Penetration Testing</div>
+        <h3>E-Commerce Platform: Critical Vulnerability Discovered Pre-Launch</h3>
+        <div class="star-item">
+          <div class="star-label">SITUATION</div>
+          <div class="star-text">A regional e-commerce startup was weeks away from going live with tens of thousands of customer records already in their system.</div>
+        </div>
+        <div class="star-item">
+          <div class="star-label">TASK</div>
+          <div class="star-text">Conduct a comprehensive penetration test of their web application and payment infrastructure within a tight timeframe.</div>
+        </div>
+        <div class="star-item">
+          <div class="star-label">ACTION</div>
+          <div class="star-text">We tested their application end-to-end, covering authentication, checkout flows, and cloud infrastructure.</div>
+        </div>
+        <div class="case-result">
+          <div class="case-result-label">📈 Result</div>
+          <p>Uncovered several critical and high-severity vulnerabilities. The client addressed all findings before launch, preventing a potential breach of customer data.</p>
+        </div>
+      </div>
+
+      <div class="case-card reveal">
+        <div class="case-tag">Penetration Testing</div>
+        <h3>SME Manufacturer: Lateral Movement Path Eliminated</h3>
+        <div class="star-item">
+          <div class="star-label">SITUATION</div>
+          <div class="star-text">A mid-sized manufacturer suspected their internal network segmentation was insufficient after a competitor fell victim to ransomware.</div>
+        </div>
+        <div class="star-item">
+          <div class="star-label">TASK</div>
+          <div class="star-text">Assess the internal network and simulate how an attacker could move laterally after gaining initial access.</div>
+        </div>
+        <div class="star-item">
+          <div class="star-label">ACTION</div>
+          <div class="star-text">We conducted an internal red team exercise, simulating a realistic attack scenario from initial foothold to full network access.</div>
+        </div>
+        <div class="case-result">
+          <div class="case-result-label">📈 Result</div>
+          <p>Demonstrated a full network compromise path and delivered a clear remediation roadmap. After implementation, the client's attack surface was significantly reduced.</p>
+        </div>
+      </div>
+
+      <div class="case-card reveal">
+        <div class="case-tag">Security Consulting</div>
+        <h3>App-Development Startup: Security Posture Built from Scratch</h3>
+        <div class="star-item">
+          <div class="star-label">SITUATION</div>
+          <div class="star-text">An App-Development startup needed to demonstrate a solid security baseline to close a major enterprise deal, but had no existing documentation or processes in place.</div>
+        </div>
+        <div class="star-item">
+          <div class="star-label">TASK</div>
+          <div class="star-text">Establish a credible security foundation aligned with common enterprise requirements within a short timeframe.</div>
+        </div>
+        <div class="star-item">
+          <div class="star-label">ACTION</div>
+          <div class="star-text">We carried out a gap analysis, created the necessary policies and documentation, and built a prioritised remediation plan.</div>
+        </div>
+        <div class="case-result">
+          <div class="case-result-label">📈 Result</div>
+          <p>The client passed the enterprise security review and closed the deal. Their security reporting process was also significantly streamlined as part of the engagement.</p>
+        </div>
+      </div>
+
+      <div class="case-card reveal">
+        <div class="case-tag">Awareness Training</div>
+        <h3>Healthcare Provider: Phishing Click Rate Reduced by 84%</h3>
+        <div class="star-item">
+          <div class="star-label">SITUATION</div>
+          <div class="star-text">A regional healthcare provider had seen multiple successful phishing attacks in a short period, putting patient data and compliance at risk.</div>
+        </div>
+        <div class="star-item">
+          <div class="star-label">TASK</div>
+          <div class="star-text">Measure employee susceptibility to phishing and deliver targeted awareness training across the organisation.</div>
+        </div>
+        <div class="star-item">
+          <div class="star-label">ACTION</div>
+          <div class="star-text">We ran phishing simulations, identified high-risk groups, and delivered tailored training workshops across departments.</div>
+        </div>
+        <div class="case-result">
+          <div class="case-result-label">📈 Result</div>
+          <p>Phishing click rates dropped dramatically within 90 days. The client saw a clear decrease in successful phishing incidents in the months that followed.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="section-inner">
+    <h2 class="reveal">Our Team</h2>
+    <div class="team-grid">
+      <!-- Tim Biedermann -->
+      <div class="team-card reveal">
+        <div class="team-card-header">
+          <div class="team-info">
+            <h3>Tim Biedermann</h3>
+            <div class="team-role">Penetration Tester</div>
+            <p class="team-bio">Tim conducts realistic attack simulations to identify vulnerabilities in networks and systems before they can be exploited. His work focuses on uncovering critical weaknesses and providing precise technical insights.</p>
+          </div>
+        </div>
+        <div class="team-skills">
+          <div class="skills-section">
+            <div class="skills-section-label">Technical Skills</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Penetration Testing</span>
+              <span class="skill-tag">Network Security</span>
+            </div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-section-label">Tools & Technologies</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Kali Linux</span>
+              <span class="skill-tag">Metasploit</span>
+              <span class="skill-tag">Nmap</span>
+              <span class="skill-tag">Wireshark</span>
+            </div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-section-label">Programming Languages</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">Bash</span>
+              <span class="skill-tag">JavaScript</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Matthias Krüger -->
+      <div class="team-card reveal">
+        <div class="team-card-header">
+          <div class="team-info">
+            <h3>Matthias Krüger</h3>
+            <div class="team-role">Security Consultant</div>
+            <p class="team-bio">Matthias translates technical findings into clear, actionable recommendations. His goal is to help organisations improve their security posture through structured and strategic guidance.</p>
+          </div>
+        </div>
+        <div class="team-skills">
+          <div class="skills-section">
+            <div class="skills-section-label">Core Skills</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Risk Analysis</span>
+              <span class="skill-tag">Security Consulting</span>
+            </div>
+          </div>
+          <div class="skills-section">
+            <div class="skills-section-label">Tools & Frameworks</div>
+            <div class="skill-tags">
+              <span class="skill-tag">AI-powered Remediation</span>
+              <span class="skill-tag">Risk Assessment Frameworks</span>
+            </div>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <h2 class="reveal">Contact Us</h2>
+    <p class="reveal" style="font-size:1.05rem; color:var(--text-muted); margin-top:1rem; margin-bottom:3rem; max-width:520px;">Ready to find out what an attacker could do to your infrastructure? Reach out directly.</p>
+    <div class="contact-details reveal" style="display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem; max-width:680px;">
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📧</div>
+        <div>
+          <div class="contact-detail-label">Email</div>
+          <a href="mailto:info@ironpen.de" class="contact-detail-text" style="text-decoration:none; color:inherit">info@ironpen.de</a>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📞</div>
+        <div>
+          <div class="contact-detail-label">Phone</div>
+          <a href="tel:+4912345678910" class="contact-detail-text" style="text-decoration:none; color:inherit">+49 123 45678910</a>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📍</div>
+        <div>
+          <div class="contact-detail-label">Address</div>
+          <div class="contact-detail-text">Beispielstraße 123, 12345 Ort</div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">🕐</div>
+        <div>
+          <div class="contact-detail-label">Office Hours</div>
+          <div class="contact-detail-text">Mon–Fri, 07:00–18:00 CET</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#executive">About Us</a></li>
+          <li><a href="#services">Our Services</a></li>
+          <li><a href="#cases">Case Studies</a></li>
+          <li><a href="#team">Our Team</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Penetration Testing</a></li>
+          <li><a href="#services">Security Consulting</a></li>
+          <li><a href="#services">Awareness Training</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@ironpen.de">info@ironpen.de</a></li>
+          <li><a href="tel:+4912345678910">+49 123 456-78910</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 <span>IronPen Security</span>. We Test What Others Trust.</div>
+    </div>
+  </div>
+</footer>
+
+<!-- BACK TO TOP -->
+<a href="#home" class="back-top" id="backTop">↑</a>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── MOBILE MENU ──
+  function toggleMenu() {
+    const h = document.getElementById('hamburger');
+    const m = document.getElementById('mobileMenu');
+    h.classList.toggle('open');
+    m.classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  // ── SCROLL REVEAL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // ── BACK TO TOP ──
+  const backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', () => {
+    backTop.classList.toggle('visible', window.scrollY > 400);
+  });
+
+  // ── FORM SUBMIT ──
+  function submitForm(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    setTimeout(() => {
+      document.getElementById('formSuccess').style.display = 'block';
+      btn.textContent = 'Sent ✓';
+      e.target.reset();
+      showToast('Message sent! We\'ll reply within 24 hours.');
+    }, 1200);
+  }
+
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // ── SERVICE CARD CLICK ──
+  document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const name = card.querySelector('h3').textContent;
+      const select = document.getElementById('service');
+      const options = Array.from(select.options);
+      options.forEach(o => { if (o.text === name) o.selected = true; });
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      showToast(`"${name}" selected — fill in your details below.`);
+    });
+  });
+</script>
+</body>
+</html>
