@@ -614,7 +614,7 @@
     .footer-bottom {
       border-top: 1px solid rgba(255,255,255,0.08);
       padding-top: 2rem;
-      display: flex; justify-content: space-between; align-items: center;
+      display: flex; justify-content: center; align-items: center; text-align: center;
     }
     .footer-copy { font-family: 'Outfit', sans-serif; font-size: 0.72rem; color: rgba(255,255,255,0.3); }
     .footer-copy span { color: rgba(255,255,255,0.6); }
@@ -656,6 +656,93 @@
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+    
+    /* ── INSIGHTS ── */
+    #insights { background: var(--bg); }
+
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .insight-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      transition: all 0.3s;
+    }
+
+    .insight-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-blue);
+      box-shadow: 0 8px 32px rgba(13,27,62,0.08);
+    }
+
+    .insight-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--navy);
+    }
+
+    .insight-card p {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+    }
+
+    .insight-tag {
+      display: inline-block;
+      margin-bottom: 1rem;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: rgba(30,64,201,0.08);
+      color: var(--blue-bright);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ── MANAGER GUIDE ── */
+    #manager { background: var(--white); }
+
+    .manager-guide {
+      margin-top: 3rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 40px;
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .guide-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+    }
+
+    .guide-card h3 {
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+      color: var(--navy);
+    }
+
+    .guide-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .nav-links { display: none; }
@@ -666,6 +753,8 @@
       .services-grid { grid-template-columns: 1fr; }
       .cases-grid { grid-template-columns: 1fr; }
       .team-grid { grid-template-columns: 1fr; }
+      .insights-grid { grid-template-columns: 1fr; }
+      .guide-grid { grid-template-columns: 1fr; }
       .contact-grid { grid-template-columns: 1fr; }
       .footer-top { grid-template-columns: 1fr 1fr; }
       .form-row { grid-template-columns: 1fr; }
@@ -690,6 +779,8 @@
     <li><a href="#services">Our Services</a></li>
     <li><a href="#cases">Case Studies</a></li>
     <li><a href="#team">Our Team</a></li>
+    <li><a href="#insights">Insights</a></li>
+    <li><a href="#manager">Manager’s Guide</a></li>
     <li><a href="#contact" class="nav-cta">Contact Us</a></li>
   </ul>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -702,6 +793,8 @@
   <a href="#services" onclick="closeMenu()">Our Services</a>
   <a href="#cases" onclick="closeMenu()">Case Studies</a>
   <a href="#team" onclick="closeMenu()">Our Team</a>
+  <a href="#insights" onclick="closeMenu()">Insights</a>
+  <a href="#manager" onclick="closeMenu()">Manager’s Guide</a>
   <a href="#contact" onclick="closeMenu()">Contact Us</a>
 </div>
 
@@ -942,7 +1035,80 @@
   </div>
 </section>
 
+
+<!-- Individual Task -->
+<section id="insights">
+  <div class="section-inner">
+    <h2 class="reveal">Insights</h2>
+    <div class="insights-grid">
+      <div class="insight-card reveal">
+        <div class="insight-tag">Opinion</div>
+        <h3>Technology & Everyday Vulnerabilities</h3>
+        <p>
+          Today’s technologies have transformed almost every aspect of modern life. Smartphones, laptops, cloud services, and artificial intelligence make communication faster, learning easier, and work more efficient. However, these benefits also come with serious vulnerabilities. Cyberattacks, data breaches, identity theft, and privacy invasion have become common concerns in a world where so much personal information is being stored online. Even simple activities such as using social media, online banking, or downloading applications can expose users to risks if security measures are weak.
+          <br><br>
+          In my opinion, technological vulnerabilities should never be ignored. Many people assume that cybercrime only affects large companies or famous individuals, but ordinary users are also targets. Hackers can steal passwords, financial information, or private data through phishing emails, unsafe websites, or insecure public Wi-Fi networks. In addition, devices themselves can track user behavior and collect large amounts of personal information, sometimes without people fully realizing it.
+          <br><br>
+          When interacting with devices like mobile phones and laptops, I believe it is very important to acknowledge these risks and take precautions. I would avoid ignoring security warnings and instead practice safe digital habits. For example, using strong passwords, enabling two-factor authentication, updating software regularly, being careful about what links or files are opened and clearing your browser cache on a regular basis can greatly reduce risks. 
+          <br><br>
+          Overall, today’s technologies are extremely valuable, but users must remain aware of their vulnerabilities. Responsible and informed use of technology is the best way to enjoy its advantages while minimizing potential dangers.
+      </div>
+
+      <div class="insight-card reveal">
+        <div class="insight-tag">SWOT Analysis</div>
+        <h3>Benefits & Risks of Evolving Technology</h3>
+        <p>
+          Technology is constantly evolving, bringing both major opportunities and significant challenges to society. From artificial intelligence to advanced communication systems, innovation improves the way people work, study, travel, and interact. However, rapid technological progress also creates risks that individuals and organizations must carefully manage.
+          <br><br>
+          A useful way to evaluate technology is through a SWOT analysis. The strengths of evolving technology include increased productivity, faster communication, medical advancements, and easier access to information. Weaknesses involve overdependence on devices, reduced face-to-face interaction, and growing cybersecurity concerns. Opportunities include the creation of new industries, smarter education systems, environmental solutions, and global collaboration. Threats involve job displacement due to automation, privacy violations, cybercrime, and the spread of misinformation.
+          <br><br>
+          One important aspect to focus on is cybersecurity, which fits under both weaknesses and threats. As technology becomes more advanced, cyberattacks also become more sophisticated. Personal data stored on smartphones, laptops, and cloud platforms can be stolen or misused if systems are not properly protected. Businesses, hospitals, and even governments have become targets of hackers, showing how vulnerable modern society can be. At the same time, people often share personal information online without fully understanding the risks involved.
+          <br><br>
+          Despite these dangers, technology should not be viewed negatively. Instead, society should focus on responsible innovation and stronger security practices. Developers can improve systems with better encryption, safer software, and regular penetration testing to identify weaknesses before hackers can exploit them. Penetration testing allows companies and organizations to simulate cyberattacks and strengthen their security systems in advance. At the same time, users can protect themselves through strong passwords, regular software updates, and careful online behavior. In my opinion, the benefits of technological progress outweigh the risks, but only if individuals and organizations remain aware of the challenges and actively work to reduce them.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANAGER GUIDE -->
+<section id="manager">
+  <div class="section-inner">
+    <h2 class="reveal">The Manager’s Guide</h2>
+
+    <div class="manager-guide reveal">
+      <p style="font-size:1rem; color:var(--text-muted); line-height:1.8; max-width:760px;">
+        To us, a good manager is someone who communicates clearly, supports the team, and leads by example. Strong management is not only about giving instructions, it is about building trust, solving problems, and helping people improve on their own as well as a team.
+      </p>
+
+      <div class="guide-grid">
+        <div class="guide-card">
+          <h3>Communication</h3>
+          <p>
+            Good managers explain goals clearly, listen to feedback and makes sure everyone understands their responsibilities.
+          </p>
+        </div>
+
+        <div class="guide-card">
+          <h3>Leadership</h3>
+          <p>
+            Managers should motivate their teams, stay organised under pressure and ensure fairness when challenges appear.
+          </p>
+        </div>
+
+        <div class="guide-card">
+          <h3>Growth</h3>
+          <p>
+            A strong manager helps employees develop new skills, learn from mistakes and improve over time.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CONTACT -->
+
 <section id="contact">
   <div class="section-inner">
     <h2 class="reveal">Contact Us</h2>
@@ -992,6 +1158,8 @@
           <li><a href="#services">Our Services</a></li>
           <li><a href="#cases">Case Studies</a></li>
           <li><a href="#team">Our Team</a></li>
+    <li><a href="#insights">Insights</a></li>
+    <li><a href="#manager">Manager’s Guide</a></li>
         </ul>
       </div>
       <div class="footer-col">
