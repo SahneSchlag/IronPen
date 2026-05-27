@@ -528,7 +528,7 @@
     }
 
     /* ── CONTACT ── */
-    #contact { background: var(--bg); }
+    #contact { background: var(--white); }
 
     .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; margin-top: 3rem; align-items: start; }
 
@@ -743,6 +743,131 @@
     }
 
 
+    /* ── AI PORTFOLIO ── */
+    #ai-portfolio { background: var(--bg); }
+
+    .ai-portfolio-intro {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      max-width: 760px;
+      margin-top: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .ai-cases-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .ai-case-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 36px;
+      transition: all 0.3s;
+    }
+
+    .ai-case-card:hover {
+      border-color: var(--border-blue);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(13,27,62,0.1);
+    }
+
+    .ai-case-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .ai-case-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .ai-case-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      color: var(--blue-bright);
+      background: rgba(30,64,201,0.07);
+      border: 1px solid rgba(30,64,201,0.15);
+      padding: 3px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      width: fit-content;
+    }
+
+    .ai-case-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .ai-work-type {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      color: var(--text-light);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      white-space: nowrap;
+      height: fit-content;
+    }
+
+    .ai-case-body {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .ai-case-scenario {
+      padding: 20px 24px;
+      background: rgba(30,64,201,0.04);
+      border-radius: 8px;
+      border-left: 3px solid var(--blue-bright);
+    }
+
+    .ai-case-scenario-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem;
+      color: var(--blue-bright);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .ai-case-scenario p {
+      font-size: 0.88rem;
+      color: var(--navy);
+      line-height: 1.7;
+    }
+
+    .ai-deadline-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 3rem;
+      padding: 12px 20px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .ai-deadline-note strong { color: var(--navy); }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .nav-links { display: none; }
@@ -781,6 +906,7 @@
     <li><a href="#team">Our Team</a></li>
     <li><a href="#insights">Insights</a></li>
     <li><a href="#manager">Manager’s Guide</a></li>
+    <li><a href="#ai-portfolio">Legal or Illegal?</a></li>
     <li><a href="#contact" class="nav-cta">Contact Us</a></li>
   </ul>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -795,6 +921,7 @@
   <a href="#team" onclick="closeMenu()">Our Team</a>
   <a href="#insights" onclick="closeMenu()">Insights</a>
   <a href="#manager" onclick="closeMenu()">Manager’s Guide</a>
+  <a href="#ai-portfolio" onclick="closeMenu()">Legal or Illegal?</a>
   <a href="#contact" onclick="closeMenu()">Contact Us</a>
 </div>
 
@@ -1107,6 +1234,54 @@
   </div>
 </section>
 
+
+<section id="ai-portfolio">
+  <div class="section-inner">
+    <h2 class="reveal">Legal or Illegal?</h2>
+ 
+    <div class="ai-cases-grid">
+ 
+      <!-- CASE 1 -->
+      <div class="ai-case-card reveal">
+        <div class="ai-case-header">
+          <div class="ai-case-meta">
+            <h3>Case 1</h3>
+          </div>
+        </div>
+        <p class="ai-case-body">
+          A student had ChatGPT generate his bachelor's thesis and did not include a proper plagiarism declaration.
+        </p>
+      </div>
+ 
+      <!-- CASE 2 -->
+      <div class="ai-case-card reveal">
+        <div class="ai-case-header">
+          <div class="ai-case-meta">
+            <h3>Case 2</h3>
+          </div>
+        </div>
+        <p class="ai-case-body">
+          A student used ChatGPT to check the spelling in his essay. For every mistake, he wrote the word on a flashcard and studied it before the next test.
+        </p>
+      </div>
+ 
+      <!-- CASE 3 -->
+      <div class="ai-case-card reveal">
+        <div class="ai-case-header">
+          <div class="ai-case-meta">
+            <h3>Case 3</h3>
+          </div>
+        </div>
+        <p class="ai-case-body">
+          A student wasnt't happy with the wording in one paragraph of his bachelor' thesis, so he had ChatGPT rewrite it. He then copied the generated text without properly proofreading it.
+        </p>
+      </div>
+ 
+    </div>
+  </div>
+</section>
+
+
 <!-- CONTACT -->
 
 <section id="contact">
@@ -1160,6 +1335,7 @@
           <li><a href="#team">Our Team</a></li>
     <li><a href="#insights">Insights</a></li>
     <li><a href="#manager">Manager’s Guide</a></li>
+    <li><a href="#ai-portfolio">Legal or Illegal?</a></li>
         </ul>
       </div>
       <div class="footer-col">
